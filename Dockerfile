@@ -1,4 +1,4 @@
-FROM node:15-buster-slim
+FROM node:current-buster-slim
 
 USER root
 
@@ -48,4 +48,5 @@ RUN apt-get update -qqy \
 
 ENV DBUS_SESSION_BUS_ADDRESS=/dev/null
 ENV DISPLAY :99
+
 USER node
