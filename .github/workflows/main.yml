@@ -9,15 +9,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: node:current-buster-slim
+    container: node:current-buster
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Install Chrome
         run: |
-          apt-get update -qqy
-          apt-get -qqy install wget gnupg git
           wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
           echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
           apt-get update -qqy
