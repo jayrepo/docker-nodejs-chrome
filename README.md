@@ -1,9 +1,17 @@
-# docker-nodejs-chrome
+# nodejs-chrome
 
 [![dockeri.co](https://dockeri.co/image/jayrepo/nodejs-chrome)](https://hub.docker.com/r/jayrepo/nodejs-chrome)
 
 Google Chrome image for running Node.js tests.
+
+Autobuild when new version available.
+
 ## Versioning
+
+### Latest
+`jayrepo/nodejs-chrome:latest`
+
+Latest Node.js and google-chrome-stable
 
 ### Major
 `jayrepo/nodejs-chrome:<node-major-version>-<chrome-major-version>`
