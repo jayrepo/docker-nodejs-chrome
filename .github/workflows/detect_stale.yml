@@ -14,4 +14,4 @@ jobs:
       - name: Detect Stale
         run: |
           STALE_TAGS=$(curl 'https://hub.docker.com/v2/repositories/jayrepo/nodejs-chrome/tags/?page_size=10000' | jq '.results[] | select(.tag_status == "stale").name')
-          for i in ${STALE_TAGS}; docker pull "jayrepo/nodejs-chrome:${i}"; done
+          for i in ${STALE_TAGS}; do docker pull "jayrepo/nodejs-chrome:${i}"; done
