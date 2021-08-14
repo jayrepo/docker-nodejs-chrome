@@ -22,7 +22,7 @@ jobs:
             echo "NODE_VERSION=$(node -v | sed -E "s/v([0-9.]+)/\1/")" >> $GITHUB_ENV
 
       - name: Checkout
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
 
       - name: Push
         run: |
