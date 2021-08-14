@@ -30,7 +30,7 @@ jobs:
           echo $VERSION
           echo $VERSION > version
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          SHORT_VERSION="${{ env.NODE_VERSION }%%.*}-${{ env.CHROME_VERSION }%%.*}"
+          SHORT_VERSION="${{ env.NODE_VERSION }}%%.*-${{ env.CHROME_VERSION }}%%.*"
           echo $SHORT_VERSION
           echo "SHORT_VERSION=$SHORT_VERSION" >> $GITHUB_ENV
           git config --global user.name 'Jay'
