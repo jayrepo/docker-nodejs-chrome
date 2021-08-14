@@ -31,8 +31,9 @@ jobs:
           echo $VERSION > version
           git config --global user.name 'Jay'
           git config --global user.email 'jayrepo@users.noreply.github.com'
-          git tag v$NODE_VERSION-$CHROME_VERSION
-          git push origin --tags
           git add version
           git push
+          git tag v$NODE_VERSION-$CHROME_VERSION
+          git push origin --tags
+
           
