@@ -12,7 +12,7 @@ jobs:
     container: node:current-buster
     
     steps:
-      - name: Check
+      - name: Version
         run: |
             wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
             echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
@@ -21,9 +21,7 @@ jobs:
             echo "CHROME_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9.]+)/\1/" | xargs)" >> $GITHUB_ENV
             echo "NODE_VERSION=$(node -v | sed -E "s/v([0-9.]+)/\1/")" >> $GITHUB_ENV
 
-           echo "${{ env.CHROME_VERSION }}"
-           echo "${{ env.NODE_VERSION }}"
-      
+      - name: Checkout
       - uses: actions/checkout@v2
 
       - name: Push
