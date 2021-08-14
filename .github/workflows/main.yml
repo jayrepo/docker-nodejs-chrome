@@ -37,4 +37,7 @@ jobs:
           git tag v$NODE_VERSION-$CHROME_VERSION
           git push origin --tags
 
+     - name: Build
+       run: |
+          echo "hello"
           
