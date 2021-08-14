@@ -1,4 +1,4 @@
-FROM node:current-buster-slim
+FROM node:current-slim
 
 USER root
 
