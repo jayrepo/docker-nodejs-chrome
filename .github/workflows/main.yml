@@ -7,38 +7,52 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  version:
     runs-on: ubuntu-latest
     container: node:current-buster
+    outputs:
+      version: ${{ steps.ver.outputs.version }}
+      shortVersion: ${{ steps.ver.outputs.shortVersion }}
     
     steps:
       - name: Version
+        id: ver
         run: |
             wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
             echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
             apt-get update -qqy
             apt-get -qqy install google-chrome-stable
-            echo "CHROME_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9.]+)/\1/" | xargs)" >> $GITHUB_ENV
-            echo "NODE_VERSION=$(node -v | sed -E "s/v([0-9.]+)/\1/")" >> $GITHUB_ENV
+            
+            CHROME_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9.]+)/\1/" | xargs)"
+            NODE_VERSION=$(node -v | sed -E "s/v([0-9.]+)/\1/")
+            
+            VERSION="${NODE_VERSION}-${CHROME_VERSION}"
+            echo $VERSION
+            
+            SHORT_VERSION="${NODE_VERSION%%.*}-${CHROME_VERSION%%.*}"
+            echo $SHORT_VERSION
+            
+            echo "::set-output name=version::${VERSION}"
+            echo "::set-output name=shortVersion::${SHORT_VERSION}"
 
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Push
         run: |
-          VERSION="${{ env.NODE_VERSION }}-${{ env.CHROME_VERSION }}"
-          echo $VERSION
-          echo $VERSION > version
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          SHORT_VERSION="${{ env.NODE_VERSION }}%%.*-${{ env.CHROME_VERSION }}%%.*"
-          echo $SHORT_VERSION
-          echo "SHORT_VERSION=$SHORT_VERSION" >> $GITHUB_ENV
+          echo ${{steps.ver.outputs.version}} > version
+          cat version
+          
           git config --global user.name 'Jay'
           git config --global user.email 'jayrepo@users.noreply.github.com'
           git add version
           git commit -m "bump version to $VERSION"
           git push
-
+          
+  build:
+    runs-on: ubuntu-latest
+    needs: version
+    steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
@@ -50,11 +64,13 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
-          tags: jayrepo/nodejs-chrome:latest,jayrepo/nodejs-chrome:${{ env.CHROME_VERSION }}
+          tags: |
+            jayrepo/nodejs-chrome:latest
+            jayrepo/nodejs-chrome:${{ needs.version.outputs.version }}
+            jayrepo/nodejs-chrome:${{ needs.version.outputs.shortVersion }}
           
