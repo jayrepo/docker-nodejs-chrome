@@ -19,7 +19,7 @@ jobs:
             apt-get update -qqy
             apt-get -qqy install google-chrome-stable
             echo "CHROME_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9.]+)/\1/")" >> $GITHUB_ENV
-            echo " NODE_VERSION=$(node -v | sed -E "s/v([0-9.]+)/\1/")" >>  $GITHUB_ENV
+            echo "NODE_VERSION=$(node -v | sed -E "s/v([0-9.]+)/\1/")" >> $GITHUB_ENV
       - name: Echo
         run: |
            echo "${{ env.CHROME_VERSION }}"
