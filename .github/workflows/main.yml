@@ -9,7 +9,7 @@ on:
 jobs:
   version:
     runs-on: ubuntu-latest
-    container: node:current-buster
+    container: node:current
     outputs:
       version: ${{ steps.ver.outputs.version }}
       shortVersion: ${{ steps.ver.outputs.shortVersion }}
