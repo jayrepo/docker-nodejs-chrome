@@ -9,23 +9,29 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: node:current-buster
-
+    
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Install Chrome
+      - name: Check Versrions
+        uses: docker://node:latest
         run: |
-          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-          echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
-          apt-get update -qqy
-          apt-get -qqy install google-chrome-stable
-
-      - name: Push Tag
+            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+            echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
+            apt-get update -qqy
+            apt-get -qqy install google-chrome-stable
+            echo "CHROME_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9.]+)/\1/")" >> $GITHUB_ENV
+            echo " NODE_VERSION=$(node -v | sed -E "s/v([0-9.]+)/\1/")" >>  $GITHUB_ENV
+      - name: Echo
         run: |
-          CHROME_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9.]+)/\1/")
-          NODE_VERSION=$(node -v | sed -E "s/v([0-9.]+)/\1/")
-          git config --global user.name 'Jay'
-          git config --global user.email 'jayrepo@users.noreply.github.com'
-          git tag v$NODE_VERSION-$CHROME_VERSION
-          git push origin --tags
+           echo "${{ env.CHROME_VERSION }}"
+           echo "${{ env.NODE_VERSION }}"
+      
+#       - uses: actions/checkout@v2
+
+#       - name: Push Tag
+#         run: |
+#           CHROME_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9.]+)/\1/")
+#           NODE_VERSION=$(node -v | sed -E "s/v([0-9.]+)/\1/")
+#           git config --global user.name 'Jay'
+#           git config --global user.email 'jayrepo@users.noreply.github.com'
+#           git tag v$NODE_VERSION-$CHROME_VERSION
+#           git push origin --tags
