@@ -23,7 +23,7 @@ jobs:
             apt-get update -qqy
             apt-get -qqy install google-chrome-stable
             
-            CHROME_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9.]+)/\1/" | xargs)"
+            CHROME_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9.]+)/\1/" | xargs)
             NODE_VERSION=$(node -v | sed -E "s/v([0-9.]+)/\1/")
             
             VERSION="${NODE_VERSION}-${CHROME_VERSION}"
