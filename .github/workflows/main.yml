@@ -44,7 +44,7 @@ jobs:
           git config --global user.name 'Jay'
           git config --global user.email 'jayrepo@users.noreply.github.com'
           git add version
-          git commit -m "bump version to $VERSION"
+          git commit -m "bump version to ${{steps.ver.outputs.version}}"
           git push
           
   build:
