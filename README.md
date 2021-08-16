@@ -7,6 +7,8 @@
 
 Google Chrome image for running Node.js tests (with chromedriver and Xvfb).
 
+https://hub.docker.com/r/jayrepo/nodejs-chrome
+
 ## Versioning
 
 ### Latest
