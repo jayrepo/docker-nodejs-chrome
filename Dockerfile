@@ -41,7 +41,7 @@ RUN CHROME_MAJOR_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9]+)(\.[0-
 #============================================
 RUN apt-get update -qqy \
     && apt-get -qqy install \
-    python \
+    python3 \
     g++ \
     make \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
