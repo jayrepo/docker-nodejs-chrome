@@ -1,7 +1,5 @@
 # nodejs-chrome
 
-![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/jayrepo/nodejs-chrome)
-![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/jayrepo/nodejs-chrome)
 ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/jayrepo/nodejs-chrome/latest?color=yellow)
 ![Docker Pulls](https://img.shields.io/docker/pulls/jayrepo/nodejs-chrome?color=red)
 
