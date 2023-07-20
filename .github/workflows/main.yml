@@ -13,7 +13,7 @@ jobs:
     outputs:
       version: ${{ steps.ver.outputs.version }}
       shortVersion: ${{ steps.ver.outputs.shortVersion }}
-      exitCode: ${{ steps.push.outputs.exitCode }}
+      exitCode: ${{ steps.comp.outputs.exitCode }}
     
     steps:
       - name: Version
@@ -22,9 +22,9 @@ jobs:
           wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
           echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
           apt-get update -qqy
-          apt-get -qqy install google-chrome-stable
+          apt-get -qqy install jq
 
-          CHROME_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9.]+)/\1/" | xargs)
+          CHROME_VERSION=$(apt-cache show google-chrome-stable | grep Version | awk '{print $2}' | cut -d '-' -f 1)
           NODE_VERSION=$(node -v | sed -E "s/v([0-9.]+)/\1/")
 
           VERSION="${NODE_VERSION}-${CHROME_VERSION}"
@@ -38,18 +38,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Push
-        id: push
+      - name: Compare
+        id: comp
         run: |
-          echo "${{steps.ver.outputs.version}}" > version
-          git config --global user.name 'Jay'
-          git config --global user.email 'jayrepo@users.noreply.github.com'
-          git config --global --add safe.directory '*'
-          git add version
-          set +e
-          git commit -m "bump version to ${{steps.ver.outputs.version}}"
-          echo "exitCode=$?" >> $GITHUB_OUTPUT
-          git push
+          if [[ $(< version) == "${{steps.ver.outputs.version}}" ]]; then
+              echo "same version"
+              echo "exitCode=1" >> $GITHUB_OUTPUT
+              exit 1
+          fi
+          echo echo "exitCode=0" >> $GITHUB_OUTPUT
+
           
   build:
     runs-on: ubuntu-latest
