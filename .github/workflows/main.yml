@@ -40,6 +40,7 @@ jobs:
 
       - name: Compare
         id: comp
+        shell: bash
         run: |
           if [[ $(< version) == "${{steps.ver.outputs.version}}" ]]; then
               echo "same version"
