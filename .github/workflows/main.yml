@@ -77,4 +77,15 @@ jobs:
             jayrepo/nodejs-chrome:latest
             jayrepo/nodejs-chrome:${{ needs.version.outputs.version }}
             jayrepo/nodejs-chrome:${{ needs.version.outputs.shortVersion }}
-          
+      - name: Commit and Push
+        id: push
+        run: |
+          echo "${{needs.version.outputs.version}}" > version
+          git config --global user.name 'Jay'
+          git config --global user.email 'jayrepo@users.noreply.github.com'
+          git config --global --add safe.directory '*'
+          git add version
+          set +e
+          git commit -m "bump version to ${{needs.version.outputs.version}}"
+          echo "exitCode=$?" >> $GITHUB_OUTPUT
+          git push
