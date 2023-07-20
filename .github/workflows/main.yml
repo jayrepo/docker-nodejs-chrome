@@ -13,7 +13,7 @@ jobs:
     outputs:
       version: ${{ steps.ver.outputs.version }}
       shortVersion: ${{ steps.ver.outputs.shortVersion }}
-      exitCode: ${{ steps.comp.outputs.exitCode }}
+      hasUpdate: ${{ steps.comp.outputs.hasUpdate }}
     
     steps:
       - name: Version
@@ -44,16 +44,15 @@ jobs:
         run: |
           if [[ $(< version) == "${{steps.ver.outputs.version}}" ]]; then
               echo "same version"
-              echo "exitCode=1" >> $GITHUB_OUTPUT
-              exit 1
+              echo "hasUpdate=0" >> $GITHUB_OUTPUT
           fi
-          echo echo "exitCode=0" >> $GITHUB_OUTPUT
+          echo "hasUpdate=1" >> $GITHUB_OUTPUT
 
           
   build:
     runs-on: ubuntu-latest
     needs: version
-    if: needs.version.outputs.exitCode == '0'
+    if: needs.version.outputs.hasUpdate == '1'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
