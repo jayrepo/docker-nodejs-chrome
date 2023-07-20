@@ -32,7 +32,7 @@ RUN CHROME_VERSION=$(google-chrome --version | awk '{print $3}') \
     && echo "Using chromedriver: "$CHROME_DRIVER_URL \
     && wget -q -O /tmp/chromedriver_linux64.zip $CHROME_DRIVER_URL \
     && rm -rf /opt/selenium/chromedriver \
-    && unzip /tmp/chromedriver_linux64.zip -d /opt/selenium \
+    && unzip -j /tmp/chromedriver_linux64.zip -d /opt/selenium \
     && rm /tmp/chromedriver_linux64.zip \
     && chmod 755 /opt/selenium/chromedriver \
     && ln -fs /opt/selenium/chromedriver /usr/bin/chromedriver
