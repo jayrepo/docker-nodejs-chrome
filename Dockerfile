@@ -30,7 +30,7 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --d
 RUN CHROME_VERSION=$(google-chrome --version | awk '{print $3}') \
     && CHROME_DRIVER_URL=$(wget -qO- https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json | jq --arg ver $CHROME_VERSION '.versions[] | select(.version == $ver) | .downloads.chromedriver[] | select(.platform == "linux64") | .url') \
     && echo "Using chromedriver: "$CHROME_DRIVER_URL \
-    && wget -q -O /tmp/chromedriver_linux64.zip CHROME_DRIVER_URL \
+    && wget -q -O /tmp/chromedriver_linux64.zip $CHROME_DRIVER_URL \
     && rm -rf /opt/selenium/chromedriver \
     && unzip /tmp/chromedriver_linux64.zip -d /opt/selenium \
     && rm /tmp/chromedriver_linux64.zip \
