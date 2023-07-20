@@ -45,9 +45,9 @@ jobs:
           if [[ $(< version) == "${{steps.ver.outputs.version}}" ]]; then
               echo "same version"
               echo "hasUpdate=0" >> $GITHUB_OUTPUT
+          else
+              echo "hasUpdate=1" >> $GITHUB_OUTPUT
           fi
-          echo "hasUpdate=1" >> $GITHUB_OUTPUT
-
           
   build:
     runs-on: ubuntu-latest
