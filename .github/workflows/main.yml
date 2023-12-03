@@ -44,8 +44,8 @@ jobs:
       - uses: madhead/semver-utils@latest
         id: semver
         with:
-          version: steps.ver.outputs.chromeVersion
-          compare-to: steps.ver.outputs.latestVersion
+          version: ${{ steps.ver.outputs.chromeVersion }}
+          compare-to: ${{ steps.ver.outputs.latestVersion }}
     
       - name: Checkout
         uses: actions/checkout@v3
