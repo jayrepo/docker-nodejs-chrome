@@ -40,12 +40,6 @@ jobs:
           echo "shortVersion=${SHORT_VERSION}" >> $GITHUB_OUTPUT
           echo "chromeVersion=${CHROME_VERSION}" >> $GITHUB_OUTPUT
           echo "latestVersion=${LATEST_VERSION}" >> $GITHUB_OUTPUT
-
-      - uses: madhead/semver-utils@latest
-        id: semver
-        with:
-          version: ${{ steps.ver.outputs.chromeVersion }}
-          compare-to: ${{ steps.ver.outputs.latestVersion }}
     
       - name: Checkout
         uses: actions/checkout@v3
@@ -57,7 +51,7 @@ jobs:
           if [[ $(< version) == "${{steps.ver.outputs.version}}" ]]; then
               echo "same version"
               echo "hasUpdate=0" >> $GITHUB_OUTPUT
-          elif [[ "${{steps.semver.outputs.comparison-result}}" ==  ">" ]]; then
+          elif dpkg --compare-versions "${{steps.ver.outputs.chromeVersion}}" "gt" "${{steps.ver.outputs.latestVersion}}" ; then
               echo "latest driver not available"
               echo "hasUpdate=0" >> $GITHUB_OUTPUT
           else
