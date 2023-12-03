@@ -32,9 +32,21 @@ jobs:
 
           SHORT_VERSION="${NODE_VERSION%%.*}-${CHROME_VERSION%%.*}"
           echo $SHORT_VERSION
+
+          LATEST_VERSION=$(curl https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_STABLE)
+          echo $LATEST_VERSION
+          
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
           echo "shortVersion=${SHORT_VERSION}" >> $GITHUB_OUTPUT
+          echo "chromeVersion=${CHROME_VERSION}" >> $GITHUB_OUTPUT
+          echo "latestVersion=${LATEST_VERSION}" >> $GITHUB_OUTPUT
 
+      - uses: madhead/semver-utils@latest
+        id: semver
+        with:
+          version: steps.ver.outputs.chromeVersion
+          compare-to: steps.ver.outputs.latestVersion
+    
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -44,6 +56,9 @@ jobs:
         run: |
           if [[ $(< version) == "${{steps.ver.outputs.version}}" ]]; then
               echo "same version"
+              echo "hasUpdate=0" >> $GITHUB_OUTPUT
+          elif [[ "${{steps.semver.outputs.comparison-result}}" ==  ">" ]]; then
+              echo "latest driver not available"
               echo "hasUpdate=0" >> $GITHUB_OUTPUT
           else
               echo "hasUpdate=1" >> $GITHUB_OUTPUT
