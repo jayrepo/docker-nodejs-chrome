@@ -46,6 +46,7 @@ jobs:
         with:
           version: ${{ steps.ver.outputs.chromeVersion }}
           compare-to: ${{ steps.ver.outputs.latestVersion }}
+          lenient: false
     
       - name: Checkout
         uses: actions/checkout@v3
