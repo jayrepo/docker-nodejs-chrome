@@ -16,10 +16,10 @@ RUN apt-get update -qqy \
     g++ \
     make \
     && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmour -o /usr/share/keyrings/google-keyring.gpg \
-    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
+    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list \
     && apt-get update -qqy \
     && apt-get -qqy install google-chrome-stable \
-    && rm /etc/apt/sources.list.d/google-chrome.list \
+    && rm -f /etc/apt/sources.list.d/google.list
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 #============================================
