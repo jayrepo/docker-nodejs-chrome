@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"          # always "/" for Actions — Dependabot finds .github/workflows automatically
+    schedule:
+      interval: "weekly"
+    groups:                 # bundle all action bumps into one PR instead of many
+      github-actions:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "dependencies"
+      - "github-actions"
